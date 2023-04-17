@@ -14,7 +14,17 @@ const participants = ['Name', 'Marillia', 'Diego', 'Rodrigo', 'Biro', 'Vini', 'A
   }
 
   function handleParticipantRemove(name: string){
-    console.log('Removendo o participante ' + name)
+
+    Alert.alert('Remover', `Gostaria de remover o participante ${name}?`, [
+      {
+        text: 'Sim',
+        onPress: () => Alert.alert('Deletado!')
+      },
+      {
+        text: 'Não',
+        style: 'cancel'
+      }
+    ])
   }
 
   return(
