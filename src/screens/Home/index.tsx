@@ -1,11 +1,20 @@
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native'
 import { Participant } from '../../components/Participant'
 import { styles } from './styles'
 
 export function Home(){
 
-  function handleParticipantAdd(){
+const participants = ['Name', 'Marillia', 'Diego', 'Rodrigo', 'Biro', 'Vini', 'Ana', 'Isa', 'Mike', 'João', 'Roberto', 'André', 'Rayssa', 'Ricardo', 'Roberta', 'Kayque', 'Jaque']
+
+  function handleParticipantAdd(name: string){
+    if(participants.includes(name)) {
+      return Alert.alert('Participante existe', 'Já existe um participante na lista com esse nome')
+    }
     console.log('Você clicou no botão de adicionar!')
+  }
+
+  function handleParticipantRemove(name: string){
+    console.log('Removendo o participante ' + name)
   }
 
   return(
@@ -27,14 +36,31 @@ export function Home(){
           placeholderTextColor='#6B6B6B'
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
+        <TouchableOpacity style={styles.button} onPress={() => handleParticipantAdd('Name')}>
           <Text style={styles.buttonText}>
             +
           </Text>
         </TouchableOpacity>
       </View>
 
-      <Participant />
+      <FlatList 
+        data={participants}
+        keyExtractor={item => item}
+        renderItem={({item}) => (
+          <Participant 
+            key={item}
+            name={item} 
+            onRemove={() => handleParticipantRemove(item)}
+          />
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={ () => (
+          <Text style={styles.listEmptyText}>
+            Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença
+          </Text>
+        )}
+      />
+        
     </View>
   )
 }
