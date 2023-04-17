@@ -1,16 +1,20 @@
+import { useState } from 'react'
 import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native'
 import { Participant } from '../../components/Participant'
 import { styles } from './styles'
 
 export function Home(){
 
-const participants = ['Name', 'Marillia', 'Diego', 'Rodrigo', 'Biro', 'Vini', 'Ana', 'Isa', 'Mike', 'João', 'Roberto', 'André', 'Rayssa', 'Ricardo', 'Roberta', 'Kayque', 'Jaque']
+  const [ participants, setParticipants] = useState<string[]>([])
 
-  function handleParticipantAdd(name: string){
-    if(participants.includes(name)) {
+  const [ participantName, setPaticipantName ] = useState('')
+
+  function handleParticipantAdd(){
+    if(participants.includes(participantName)) {
       return Alert.alert('Participante existe', 'Já existe um participante na lista com esse nome')
     }
-    console.log('Você clicou no botão de adicionar!')
+    setParticipants(prevState => [...prevState, participantName])
+    setPaticipantName('')
   }
 
   function handleParticipantRemove(name: string){
@@ -44,9 +48,11 @@ const participants = ['Name', 'Marillia', 'Diego', 'Rodrigo', 'Biro', 'Vini', 'A
           style={styles.input}
           placeholder='Nome do Participante'
           placeholderTextColor='#6B6B6B'
+          onChangeText={setPaticipantName}
+          value={participantName}
         />
 
-        <TouchableOpacity style={styles.button} onPress={() => handleParticipantAdd('Name')}>
+        <TouchableOpacity style={styles.button} onPress={() => handleParticipantAdd()}>
           <Text style={styles.buttonText}>
             +
           </Text>
@@ -65,9 +71,14 @@ const participants = ['Name', 'Marillia', 'Diego', 'Rodrigo', 'Biro', 'Vini', 'A
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={ () => (
-          <Text style={styles.listEmptyText}>
-            Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença
-          </Text>
+          <>
+            <Text style={styles.listEmptyText}>
+              Ninguém chegou no evento ainda? 
+            </Text>
+            <Text style={styles.listEmptyText}>
+              Adicione participantes a sua lista de presença
+            </Text>
+          </>
         )}
       />
         
